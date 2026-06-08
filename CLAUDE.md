@@ -5,7 +5,7 @@ Cimareme, Bandung Barat. Dibangun oleh mahasiswa magang, diserahkan ke PT SAP sa
 ---
 
 ## Tech Stack
-- **Framework**: Next.js 14 — App Router ONLY, bukan Pages Router
+- **Framework**: Next.js versi actual: 16.2.7 (bukan 14 seperti rencana awal)
 - **Styling**: Tailwind CSS v3 + shadcn/ui
 - **Database**: Supabase (PostgreSQL) — storage only, semua query dari server
 - **Auth**: Supabase Auth + Next.js Middleware
@@ -34,7 +34,7 @@ lib/
   actions/     → Server Actions per modul (fleet.ts, quotations.ts, dst.)
   types/       → TypeScript interfaces
   utils/       → formatCurrency, formatDate, dll.
-middleware.ts  → auth protection, role check untuk /admin/*
+proxy.ts       → auth protection, role check untuk /admin/*
 schema.sql     → DDL lengkap — sumber kebenaran struktur database
 seed.sql       → data awal 39 unit + pricelist + klien contoh (belum dibuat)
 ```

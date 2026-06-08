@@ -549,6 +549,25 @@ CREATE POLICY "Users can update their own profile"
 
 
 -- ============================================================
+-- EXPLICIT GRANTS
+-- Diperlukan karena Supabase kadang tidak otomatis grant
+-- service_role ke tabel profiles saat RLS diaktifkan.
+-- Tanpa ini, query dari createAdminClient() akan return
+-- error "permission denied for table profiles" (code 42501).
+-- ============================================================
+
+GRANT SELECT ON public.profiles TO authenticated;
+GRANT SELECT ON public.profiles TO service_role;
+GRANT INSERT ON public.profiles TO service_role;
+GRANT UPDATE ON public.profiles TO service_role;
+GRANT DELETE ON public.profiles TO service_role;
+
+-- Grant untuk semua tabel lain (best practice)
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO authenticated;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;
+
+
+-- ============================================================
 -- END OF SCHEMA
 -- Lanjutkan dengan menjalankan seed.sql untuk data awal
 -- ============================================================

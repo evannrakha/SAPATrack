@@ -558,15 +558,20 @@ CREATE POLICY "Users can update their own profile"
 -- ============================================================
 
 -- Grant ke semua tabel
+-- Grant ke semua tabel
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO authenticated;
 GRANT ALL    ON ALL TABLES IN SCHEMA public TO service_role;
 
--- Grant eksplisit ke profiles (sering bermasalah di Supabase)
-GRANT SELECT ON public.profiles TO authenticated;
-GRANT SELECT ON public.profiles TO service_role;
-GRANT INSERT ON public.profiles TO service_role;
-GRANT UPDATE ON public.profiles TO service_role;
-GRANT DELETE ON public.profiles TO service_role;
+-- Grant eksplisit per tabel (Supabase kadang tidak honor
+-- GRANT ALL untuk tabel dengan RLS aktif — ini fix-nya)
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.clients         TO service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.units           TO service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.pricelist       TO service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.projects        TO service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.deployments     TO service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.quotations      TO service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.quotation_items TO service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.profiles        TO service_role;
 
 -- Grant eksplisit ke views
 -- (views tidak selalu ter-cover oleh GRANT ALL TABLES)

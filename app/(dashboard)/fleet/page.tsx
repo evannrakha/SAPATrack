@@ -18,19 +18,21 @@ const categoryLabel: Record<string, string> = {
 
 const statusBadge: Record<
   string,
-  { label: string; className: string }
+  { label: string; variant: 'outline' | 'default' | 'destructive'; className?: string }
 > = {
   idle: {
     label: 'Idle',
-    className: 'border-border text-foreground',
+    variant: 'outline',
+    className: 'text-green-600 border-green-600',
   },
   active: {
     label: 'Aktif',
-    className: 'border-transparent bg-secondary text-secondary-foreground',
+    variant: 'default',
+    className: 'bg-amber-500 hover:bg-amber-500 text-white border-transparent',
   },
   maintenance: {
     label: 'Servis',
-    className: 'border-destructive/20 bg-destructive/10 text-destructive',
+    variant: 'destructive',
   },
 }
 
@@ -82,41 +84,45 @@ export default async function FleetPage({
       <div className="flex items-center gap-2">
         <Link
           href="/fleet"
-          className={
+          className={[
+            'inline-flex items-center whitespace-nowrap rounded-full border px-3 py-1 text-xs font-semibold transition-colors',
             !filterStatus
-              ? 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-border bg-muted text-foreground'
-              : 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors'
-          }
+              ? 'border-foreground text-foreground'
+              : 'border-transparent text-muted-foreground hover:text-foreground',
+          ].join(' ')}
         >
           Semua ({allUnits?.length ?? 0})
         </Link>
         <Link
           href="/fleet?status=idle"
-          className={
+          className={[
+            'inline-flex items-center whitespace-nowrap rounded-full border px-3 py-1 text-xs font-semibold transition-colors',
             filterStatus === 'idle'
-              ? 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300'
-              : 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors'
-          }
+              ? 'border-green-600 text-green-600'
+              : 'border-transparent text-muted-foreground hover:text-foreground',
+          ].join(' ')}
         >
           {counts.idle} Idle
         </Link>
         <Link
           href="/fleet?status=active"
-          className={
+          className={[
+            'inline-flex items-center whitespace-nowrap rounded-full border px-3 py-1 text-xs font-semibold transition-colors',
             filterStatus === 'active'
-              ? 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-300'
-              : 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors'
-          }
+              ? 'border-amber-500 text-amber-600'
+              : 'border-transparent text-muted-foreground hover:text-foreground',
+          ].join(' ')}
         >
           {counts.active} Aktif
         </Link>
         <Link
           href="/fleet?status=maintenance"
-          className={
+          className={[
+            'inline-flex items-center whitespace-nowrap rounded-full border px-3 py-1 text-xs font-semibold transition-colors',
             filterStatus === 'maintenance'
-              ? 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300'
-              : 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold border-border text-muted-foreground hover:bg-muted hover:text-foreground transition-colors'
-          }
+              ? 'border-red-600 text-red-600'
+              : 'border-transparent text-muted-foreground hover:text-foreground',
+          ].join(' ')}
         >
           {counts.maintenance} Servis
         </Link>
@@ -152,7 +158,7 @@ export default async function FleetPage({
                       {categoryLabel[unit.category] ?? unit.category}
                     </TableCell>
                     <TableCell>
-                      <Badge className={badge.className}>{badge.label}</Badge>
+                      <Badge variant={badge.variant} className={badge.className}>{badge.label}</Badge>
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {unit.active_project_name ?? '—'}
